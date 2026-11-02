@@ -1,4 +1,4 @@
-"""AdvancedPermuter :: radix-style zero-allocation combinatorial unranking engine.
+"""Permuter :: radix-style zero-allocation combinatorial unranking engine.
 
 The engine enumerates every word of a fixed-length sequence over an alphabet
 without materialising a tree, a list or a lookup table.  Index ``k`` is mapped
@@ -35,7 +35,7 @@ from typing import BinaryIO, Callable, Iterator, NamedTuple, Sequence
 BUFFER_SIZE = 64 * 1024
 """Size of the single write buffer used by the streaming engine (64 KiB)."""
 
-DEFAULT_OUTPUT_DIR = "AdvancedPermuter_Out"
+DEFAULT_OUTPUT_DIR = "Permuter_Out"
 DEFAULT_EXTENSION = ".txt"
 
 SI_UNITS = ("B", "KB", "MB", "GB", "TB", "PB")
@@ -355,7 +355,7 @@ def plan_output(output: str) -> OutputTarget:
     """Resolve a user supplied output path into a concrete target.
 
     If the name carries no directory component the files are placed inside
-    :data:`DEFAULT_OUTPUT_DIR` (``AdvancedPermuter_Out``).
+    :data:`DEFAULT_OUTPUT_DIR` (``Permuter_Out``).
     """
     stem, extension = split_output_name(output)
     directory, name = os.path.split(stem)

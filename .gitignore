@@ -2,7 +2,7 @@ __pycache__/
 *.py[cod]
 *.bak
 .pytest_cache/
-AdvancedPermuter_Out/
+Permuter_Out/
 scripts/old/
 .venv/
 venv/

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""AdvancedPermuter launcher.
+"""Permuter launcher.
 
 Thin orchestration layer around :mod:`scripts.algorithm`:
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""AdvancedPermuter benchmark suite.
+"""Permuter benchmark suite.
 
 Sections
 --------
@@ -422,7 +422,7 @@ def run_classical_comparison(ui: Console, limit_mib: int = 96) -> dict | None:
                 f"{limit_mib} MiB cap",
             ],
             [
-                "AdvancedPermuter",
+                "Permuter",
                 f"completed in {elapsed:.2f} s",
                 format_integer(total),
                 "64 KiB buffer",
@@ -476,7 +476,7 @@ def run_projection(ui: Console) -> list[tuple[int, int]]:
     ui.field("Measured list overhead", f"{per_entry:.1f} bytes / word", "CPython 3.14")
     table(
         ui,
-        ["Space (26^L)", "List-based RAM", "AdvancedPermuter"],
+        ["Space (26^L)", "List-based RAM", "Permuter"],
         rows,
         [20, 22, 22],
     )
@@ -498,7 +498,7 @@ def run_projection(ui: Console) -> list[tuple[int, int]]:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="AdvancedPermuter benchmark (zero-allocation unranking engine)."
+        description="Permuter benchmark (zero-allocation unranking engine)."
     )
     parser.add_argument("--words", type=int, default=1_000_000, help="words per throughput row")
     parser.add_argument(
@@ -532,7 +532,7 @@ def main(argv=None) -> int:
 
     ui.blank()
     ui.header(
-        f"AdvancedPermuter v{__version__} · benchmark",
+        f"Permuter v{__version__} · benchmark",
         "zero-allocation combinatorial unranking",
         width=74,
     )

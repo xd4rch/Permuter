@@ -1,4 +1,4 @@
-"""Comprehensive test suite for AdvancedPermuter.
+"""Comprehensive test suite for Permuter.
 
 Run with either of:
 
@@ -518,7 +518,7 @@ class LegacyCompatibilityTests(unittest.TestCase):
     def test_assets_banner_and_help(self):
         from scripts import assets
 
-        self.assertIn("AdvancedPermuter", assets.banner_text("3.0.0"))
+        self.assertIn("Permuter", assets.banner_text("3.0.0"))
         self.assertIn("USAGE", assets.help_text("launcher.py"))
         with contextlib.redirect_stdout(io.StringIO()):
             assets.banner()

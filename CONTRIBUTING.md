@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for improving AdvancedPermuter. This project is intentionally small,
+Thanks for improving Permuter. This project is intentionally small,
 dependency-free and deterministic; please keep it that way.
 
 ## Ground rules

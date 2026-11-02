@@ -5,13 +5,10 @@ Kept free of logic so the launcher (and tests) can render it anywhere.
 
 from __future__ import annotations
 
-APP_NAME = "AdvancedPermuter"
+APP_NAME = "Permuter"
 TAGLINE = "Radix-Style Zero-Allocation Combinatorial Unranking Engine"
 
 BANNER_ART = r"""
-  ░█▀█░█▀▄░█░█░█▀█░█▀█░█▀▀░█▀▀░█▀▄
-  ░█▀█░█░█░▀▄▀░█▀█░█░█░█░░░█▀▀░█░█
-  ░▀░▀░▀▀░░░▀░░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░
   ░█▀█░█▀▀░█▀▄░█▄█░█░█░▀█▀░█▀▀░█▀▄
   ░█▀▀░█▀▀░█▀▄░█░█░█░█░░█░░█▀▀░█▀▄
   ░▀░░░▀▀▀░▀░▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀░▀
@@ -56,7 +53,7 @@ OUTPUT
   -o, --out-file <path>      Output file. Alias: -f, --file.
   -f, --file <path>          Same destination as -o/--out-file.
                              Without a directory the file is written inside
-                             AdvancedPermuter_Out/name_1.txt.
+                             Permuter_Out/name_1.txt.
                              Without an extension ".txt" is appended.
   -m, --multi <int>          Split the range into N balanced part files.
       --workers <int>        Generate with N processes. Each process owns one

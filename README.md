@@ -1,6 +1,6 @@
 <div align="center">
 
-# AdvancedPermuter
+# Permuter
 
 **Zero-Allocation · O(1) Memory · Radix-Style Combinatorial Unranking & Stream Engine**
 
@@ -19,13 +19,13 @@
 
 ## English
 
-> **The pitch.** Most enumeration tools — wordlist generators included — treat the search space as something to *materialise*: build a list, build a tree, or replay a generator from zero. AdvancedPermuter is not a wordlist maker: it treats the space as a **number**. Every word of length `L` over an `N`-symbol alphabet is exactly one integer in `[0, N^L)`, and the mapping is a closed-form base-`N` conversion. That single observation removes the memory wall entirely: generation becomes arithmetic, arbitrary index access becomes `O(L)`, and a 64 KiB block buffer is all the RAM the engine ever needs.
+> **The pitch.** Most enumeration tools — wordlist generators included — treat the search space as something to *materialise*: build a list, build a tree, or replay a generator from zero. Permuter is not a wordlist maker: it treats the space as a **number**. Every word of length `L` over an `N`-symbol alphabet is exactly one integer in `[0, N^L)`, and the mapping is a closed-form base-`N` conversion. That single observation removes the memory wall entirely: generation becomes arithmetic, arbitrary index access becomes `O(L)`, and a 64 KiB block buffer is all the RAM the engine ever needs.
 
 ### Not a wordlist maker. An enumeration primitive.
 
-AdvancedPermuter does not *make a wordlist* and then write it. It computes the k-th word **directly from k**, the closed-form inverse of a radix-`N` counter. There is no counter array, no table, no staging file: digits are produced with `divmod`, used as alphabet indices, and written straight into one 64 KiB block.
+Permuter does not *make a wordlist* and then write it. It computes the k-th word **directly from k**, the closed-form inverse of a radix-`N` counter. There is no counter array, no table, no staging file: digits are produced with `divmod`, used as alphabet indices, and written straight into one 64 KiB block.
 
-Picture a mechanical counter with `L` wheels and `N` symbols per wheel. A classic tool either materialises every wheel position or clicks through them one at a time. AdvancedPermuter reads wheel pattern **#k** without visiting the previous `k-1` patterns, and it streams any `[begin, end)` slice as a radix odometer.
+Picture a mechanical counter with `L` wheels and `N` symbols per wheel. A classic tool either materialises every wheel position or clicks through them one at a time. Permuter reads wheel pattern **#k** without visiting the previous `k-1` patterns, and it streams any `[begin, end)` slice as a radix odometer.
 
 | It is | It is not |
 |---|---|
@@ -37,7 +37,7 @@ That makes it a primitive for wordlists, fuzz corpora, deterministic test data, 
 
 ### The memory wall
 
-| Search space | Words | A Python `list` needs* | AdvancedPermuter |
+| Search space | Words | A Python `list` needs* | Permuter |
 |---|---:|---:|---:|
 | `26⁶` | 308,915,776 | ~16.96 GB | **64 KiB** |
 | `26⁸` | 208,827,064,576 | ~11.46 TB | **64 KiB** |
@@ -50,7 +50,7 @@ At `26⁸` the list no longer fits in any machine on Earth. Yet word **#120,000,
 ```console
 $ python benchmark.py          # classical list, hard-capped at 96 MiB
 Python list        MemoryError after 0.12 s        1,336,616 words
-AdvancedPermuter   completed in 1.73 s            11,881,376 words   (64 KiB)
+Permuter   completed in 1.73 s            11,881,376 words   (64 KiB)
 ```
 
 ### One bijection, no state
@@ -173,7 +173,7 @@ A run prints its full plan before writing a single byte:
   Words to generate     208,827,064,576
   Estimated size        1.88 TB (SI)  ·  1.71 TiB (IEC)  exact
   Memory footprint      64 KiB fixed buffer  ·  O(1) space
-  Output                AdvancedPermuter_Out  10 parts · dataset_1.txt … dataset_10.txt
+  Output                Permuter_Out  10 parts · dataset_1.txt … dataset_10.txt
   Parallelism           1 process  10 part files
 ```
 
@@ -205,7 +205,7 @@ A run prints its full plan before writing a single byte:
 
 ### Output layout
 
-- A name without a directory goes to `AdvancedPermuter_Out/`.
+- A name without a directory goes to `Permuter_Out/`.
 - A name without an extension gets `.txt` (`dataset` → `dataset_1.txt`).
 - Part files are always numbered from `1`: `-o out/data.csv -m 4` → `out/data_1.csv` … `out/data_4.csv`.
 - Files are opened in **truncating binary write mode** and encoded as **UTF-8 with LF**, so reruns never append and byte counts are deterministic on every OS.
@@ -357,11 +357,11 @@ Environment: **Windows 11 · Python 3.14.7 · Intel Core i7-14650HX (16C/24T) ·
 | Approach | Outcome | Words held | Memory |
 |---|---|---|---:|
 | Python `list` | `MemoryError` after 0.12 s | 1,336,616 (11.25%) | 96 MiB cap |
-| AdvancedPermuter | completed in 1.73 s · 6.87M words/s · 41.2 MB/s | 11,881,376 (100%) | **64 KiB** |
+| Permuter | completed in 1.73 s · 6.87M words/s · 41.2 MB/s | 11,881,376 (100%) | **64 KiB** |
 
 **Projection** — measured 54.9 bytes/word of list overhead:
 
-| Space | List-based RAM | AdvancedPermuter |
+| Space | List-based RAM | Permuter |
 |---|---:|---:|
 | `26⁶` (308,915,776) | 16.955 GB | 64 KiB |
 | `26⁸` (208,827,064,576) | 11.461 TB | 64 KiB |
@@ -421,13 +421,13 @@ MIT — see [`LICENSE`](LICENSE).
 
 ## Türkçe
 
-> **Kısaca.** Çoğu numaralandırma aracı — kelime listesi üreticileri dahil — arama uzayını *somutlaştırır*: liste kurar, ağaç kurar ya da bir üreteci sıfırdan tekrar oynatır. AdvancedPermuter bir kelime listesi üreticisi değildir: uzayı bir **sayı** olarak görür. `N` sembollü bir alfabede `L` uzunluğundaki her kelime, `[0, N^L)` aralığındaki tam olarak bir tamsayıya karşılık gelir ve bu eşleme kapalı formda bir taban-`N` dönüşümüdür. Bu tek gözlem bellek duvarını ortadan kaldırır: üretim aritmetiğe, rastgele indeks erişimi `O(L)`'ye dönüşür ve motorun ihtiyaç duyduğu tüm RAM tek bir 64 KiB blok tamponudur.
+> **Kısaca.** Çoğu numaralandırma aracı — kelime listesi üreticileri dahil — arama uzayını *somutlaştırır*: liste kurar, ağaç kurar ya da bir üreteci sıfırdan tekrar oynatır. Permuter bir kelime listesi üreticisi değildir: uzayı bir **sayı** olarak görür. `N` sembollü bir alfabede `L` uzunluğundaki her kelime, `[0, N^L)` aralığındaki tam olarak bir tamsayıya karşılık gelir ve bu eşleme kapalı formda bir taban-`N` dönüşümüdür. Bu tek gözlem bellek duvarını ortadan kaldırır: üretim aritmetiğe, rastgele indeks erişimi `O(L)`'ye dönüşür ve motorun ihtiyaç duyduğu tüm RAM tek bir 64 KiB blok tamponudur.
 
 ### Kelime listesi üreticisi değil; bir numaralandırma ilkeli.
 
-AdvancedPermuter önce bir kelime listesi *üretip* sonra yazmaz. `k`. kelimeyi **doğrudan `k`'dan** hesaplar; bu, radix-`N` sayacının kapalı formdaki tersidir. Sayacı dizi olarak tutmaz, tablo yoktur, ara dosya yoktur: rakamlar `divmod` ile üretilir, alfabe indeksi olarak kullanılır ve doğrudan tek bir 64 KiB bloğa yazılır.
+Permuter önce bir kelime listesi *üretip* sonra yazmaz. `k`. kelimeyi **doğrudan `k`'dan** hesaplar; bu, radix-`N` sayacının kapalı formdaki tersidir. Sayacı dizi olarak tutmaz, tablo yoktur, ara dosya yoktur: rakamlar `divmod` ile üretilir, alfabe indeksi olarak kullanılır ve doğrudan tek bir 64 KiB bloğa yazılır.
 
-`L` tekerlekli, her tekerleğinde `N` sembol bulunan mekanik bir sayaç düşünün. Klasik araç ya tüm tekerlek konumlarını somutlaştırır ya da baştan tek tek tıklar. AdvancedPermuter, önceki `k-1` deseni ziyaret etmeden **#k** desenini okur; herhangi bir `[begin, end)` dilimini radix odometresi olarak akıtır.
+`L` tekerlekli, her tekerleğinde `N` sembol bulunan mekanik bir sayaç düşünün. Klasik araç ya tüm tekerlek konumlarını somutlaştırır ya da baştan tek tek tıklar. Permuter, önceki `k-1` deseni ziyaret etmeden **#k** desenini okur; herhangi bir `[begin, end)` dilimini radix odometresi olarak akıtır.
 
 | Şudur | Şu değildir |
 |---|---|
@@ -439,7 +439,7 @@ Bu yüzden kelime listeleri, fuzz veri kümeleri, belirlenimci test verileri, ö
 
 ### Bellek duvarı
 
-| Arama uzayı | Kelime sayısı | Klasik Python `list` | AdvancedPermuter |
+| Arama uzayı | Kelime sayısı | Klasik Python `list` | Permuter |
 |---|---:|---:|---:|
 | `26⁶` | 308.915.776 | ~16,96 GB | **64 KiB** |
 | `26⁸` | 208.827.064.576 | ~11,46 TB | **64 KiB** |
@@ -452,7 +452,7 @@ Bu yüzden kelime listeleri, fuzz veri kümeleri, belirlenimci test verileri, ö
 ```console
 $ python benchmark.py          # klasik liste, 96 MiB sert bellek sınırı
 Python list        MemoryError after 0.12 s        1.336.616 kelime
-AdvancedPermuter   completed in 1.73 s            11.881.376 kelime   (64 KiB)
+Permuter   completed in 1.73 s            11.881.376 kelime   (64 KiB)
 ```
 
 ### Tek bir eşleme, sıfır durum
@@ -575,7 +575,7 @@ python launcher.py -q -l 2 -s deneme test 123 -o combos -y
   Words to generate     208,827,064,576
   Estimated size        1.88 TB (SI)  ·  1.71 TiB (IEC)  exact
   Memory footprint      64 KiB fixed buffer  ·  O(1) space
-  Output                AdvancedPermuter_Out  10 parts · dataset_1.txt … dataset_10.txt
+  Output                Permuter_Out  10 parts · dataset_1.txt … dataset_10.txt
   Parallelism           1 process  10 part files
 ```
 
@@ -607,7 +607,7 @@ python launcher.py -q -l 2 -s deneme test 123 -o combos -y
 
 ### Çıktı düzeni
 
-- Dizin içermeyen ad `AdvancedPermuter_Out/` altına yazılır.
+- Dizin içermeyen ad `Permuter_Out/` altına yazılır.
 - Uzantısız ad `.txt` alır (`dataset` → `dataset_1.txt`).
 - Parça dosyaları her zaman `1`'den numaralanır: `-o out/data.csv -m 4` → `out/data_1.csv` … `out/data_4.csv`.
 - Dosyalar **kırpan ikili yazma kipinde** açılır ve **UTF-8 + LF** olarak kodlanır; yeniden çalıştırma asla ekleme yapmaz ve bayt sayısı her işletim sisteminde belirlenimcidir.
@@ -759,11 +759,11 @@ Ortam: **Windows 11 · Python 3.14.7 · Intel Core i7-14650HX (16C/24T) · NVMe 
 | Yaklaşım | Sonuç | Tutulan kelime | Bellek |
 |---|---|---|---:|
 | Python `list` | 0,12 sn sonra `MemoryError` | 1.336.616 (%11,25) | 96 MiB sınır |
-| AdvancedPermuter | 1,73 sn'de tamamlandı · 6,87M kelime/sn · 41,2 MB/sn | 11.881.376 (%100) | **64 KiB** |
+| Permuter | 1,73 sn'de tamamlandı · 6,87M kelime/sn · 41,2 MB/sn | 11.881.376 (%100) | **64 KiB** |
 
 **İzdüşüm** — kelime başına 54,9 bayt liste yükü ölçüldü:
 
-| Uzay | Liste tabanlı RAM | AdvancedPermuter |
+| Uzay | Liste tabanlı RAM | Permuter |
 |---|---:|---:|
 | `26⁶` (308.915.776) | 16,955 GB | 64 KiB |
 | `26⁸` (208.827.064.576) | 11,461 TB | 64 KiB |

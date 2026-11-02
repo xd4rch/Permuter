@@ -1,4 +1,4 @@
-"""Strict, dependency-free command line parsing for AdvancedPermuter.
+"""Strict, dependency-free command line parsing for Permuter.
 
 The original helper was a positional token juggler with three design bugs:
 option aliases could not share a destination, a forgotten ``raise`` made an
